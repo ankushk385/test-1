@@ -1,11 +1,16 @@
 import './App.css';
 import React,{useState,useEffect} from 'react';
 import axios from 'axios';
+import Modal from "react-modal";
 
 function App() {
   const [data, setData] = useState([])
   const [itemName, setItemName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [showName, setShowName] = useState("")
+  const [showPrice, setShowPrice] = useState("")
+
   const url = 'http://localhost:3333';
 
   const getData = async ()=>{
@@ -25,6 +30,14 @@ function App() {
   );
   }
 
+  const showItem = (name,price)=>{
+    setShowName(name)
+    setShowPrice(price);
+   setOpenModal(true)
+  }
+  const closeModal = ()=>{
+    setOpenModal(false)
+   }
   const addItem = (e)=>{
     
     e.preventDefault();
@@ -52,9 +65,12 @@ function App() {
        { data.map((item)=>(
          <li key={item.itemId}>
           <h3>{item.item}</h3>
-          <button onClick={()=>{
+          <button className="del" onClick={()=>{
           deleteItem(item.itemId);
         }} >Delete</button>
+         <button onClick={()=>{
+          showItem(item.item,item.price);
+        }} >show details</button>
            </li>
         ))}
         </ul>
@@ -77,7 +93,19 @@ function App() {
             Add Item
           </button>
       </div>
-      
+
+      <Modal
+            isOpen={openModal}
+            ariaHideApp={false}
+            className="mymodal"
+            overlayClassName="myoverlay"
+          >
+            <label htmlFor="">item name</label>
+            <h5>{showName}</h5>
+            <label htmlFor="">item price</label>
+            <h5>{showPrice}</h5>
+            <button onClick={closeModal}>close</button>
+          </Modal>
     </div>
     </>
   );
