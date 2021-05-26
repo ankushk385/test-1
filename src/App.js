@@ -43,9 +43,9 @@ function App() {
     e.preventDefault();
 
     let data = {
-      id: Math.floor(Math.random() * 1000),
-      itemName,
-      itemPrice
+      itemId: Math.floor(Math.random() * 1000),
+      item:itemName,
+      price:itemPrice
     };
 
     axios.post(url+"/item/add", data).then((res) => {
